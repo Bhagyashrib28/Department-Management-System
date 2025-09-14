@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Students</title>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+  <header>
+    <h1>Student Management</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="student.html">Student</a></li>
+        <li><a href="course.html">Course</a></li>
+        <li><a href="faculty.html">Faculty</a></li>
+        <li><a href="read.html">View Record</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="form-section">
+      <h2>Student Information</h2>
+      <form>
+        <label for="student_id">Student ID:</label>
+        <input type="text" name="student_id" id="student_id" required placeholder="e.g.,S101">
+
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name"required placeholder="e.g.,XYZ">
+
+        <label for="rollno" >Roll No:</label>
+        <input type="text" name="rollno" id="rollno" required placeholder="e.g., 101">
+        
+        <label for="email">Email ID:</label>
+        <input type="email" name="email" id="email" required placeholder="e.g.,xyz@gmail.com">
+
+        <label for="phno">Phone Number</label>
+        <input type="tel" id="phno" maxlength="10" minlength="10" name="phno" required placeholder="e.g.,9876543210">
+
+        <label for="department">Department:</label>
+        <input type="text" name="department" id="department" required placeholder="e.g.,Information Technology">
+        
+        <button type="submit">Save</button>
+      </form>
+    </section>
+
+    <section class="table-section">
+      <h2>Student Records</h2>
+      <table>
+        <tr>
+          <th>ID</th><th>Name</th><th>Roll No</th><th>Department</th><th>Actions</th>
+        </tr>
+        <!-- Sample row -->
+        <tr>
+          <td>1</td><td>Aliya</td><td>101</td><td>IT</td>
+          <td>
+            <button class="edit">Edit</button>
+            <button class="delete">Delete</button>
+          </td>
+        </tr>
+      </table>
+    </section>
+  </main>
+    <script src="../js/student.js"></script>
+
+</body>
+</html>

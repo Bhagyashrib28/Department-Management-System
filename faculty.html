@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Faculty</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header>
+    <h1>Faculty Management</h1>
+   <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="student.html">Student</a></li>
+        <li><a href="course.html">Course</a></li>
+        <li><a href="faculty.html">Faculty</a></li>
+        <li><a href="read.html">View Record</a></li>
+        
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="form-section">
+      <h2>Faculty Information</h2>
+      <form>
+        <label for="faculty_id">Faculty ID:</label>
+        <input type="text" name="faculty_id" required id="faculty_id" placeholder="e.g.,F01">
+
+        <label for="fname">Name:</label>
+        <input type="text" name="name" required id="fname" placeholder="e.g.,Dr. Bhagyashree">
+
+        <label for="dept">Department:</label>
+        <input type="text" name="department" required id="dept" placeholder="e.g.,Computer">
+
+        <button type="submit">Save</button>
+      </form>
+    </section>
+
+    <section class="table-section">
+      <h2>Faculty Records</h2>
+      <table>
+        <tr>
+          <th>ID</th><th>Name</th><th>Department</th><th>Actions</th>
+        </tr>
+        <tr>
+          <td>F01</td><td>Dr. Bhagyashree</td><td>Computer</td>
+          <td>
+            <button class="edit">Edit</button>
+            <button class="delete">Delete</button>
+          </td>
+        </tr>
+      </table>
+    </section>
+  </main>
+    <script src="../js/faculty.js"></script>
+
+</body>
+</html>
