@@ -1,57 +1,290 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Read Data</title>
- <link rel="stylesheet" href="./style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Records</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>View Records</h1>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="student.html">Student</a></li>
-        <li><a href="course.html">Course</a></li>
-        <li><a href="faculty.html">Faculty</a></li>
-        <li><a href="read.html">View Record</a></li>
-      </ul>
-  </header>
+    <header>
+        <h1>View Records</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="student.html">Student</a></li>
+                <li><a href="course.html">Course</a></li>
+                <li><a href="faculty.html">Faculty</a></li>
+                <li><a href="read.html">View Record</a></li>
+            </ul>
+        </nav>
+    </header>
 
-  <main>
-    <section class="table-section">
-      <h2>Students</h2>
-      <table>
-        <tr>
-          <th>ID</th><th>Name</th><th>Roll No</th><th>Department</th>
-        </tr>
-        <tr>
-        </tr>
-      </table>
-    </section>
+    <main>
+        <section class="table-section">
+            <h2>Students</h2>
+            <table id="studentsTable">
+                <tr>
+                    <th>ID</th><th>Name</th><th>Phone</th><th>Department</th><th>Actions</th>
+                </tr>
+            </table>
+        </section>
 
-    <section class="table-section">
-      <h2>Courses</h2>
-      <table>
-        <tr>
-          <th>ID</th><th>Name</th><th>Credits</th>
-        </tr>
-        <tr>
-        </tr>
-      </table>
-    </section>
+        <section class="table-section">
+            <h2>Courses</h2>
+            <table id="coursesTable">
+                <tr>
+                    <th>ID</th><th>Name</th><th>Credits</th><th>Actions</th>
+                </tr>
+            </table>
+        </section>
 
-    <section class="table-section">
-      <h2>Faculty</h2>
-      <table>
-        <tr>
-          <th>ID</th><th>Name</th><th>Department</th>
-        </tr>
-        <tr>
-        </tr>
-      </table>
-    </section>
-  </main>
+        <section class="table-section">
+            <h2>Faculty</h2>
+            <table id="facultyTable">
+                <tr>
+                    <th>ID</th><th>Name</th><th>Department</th><th>Actions</th>
+                </tr>
+            </table>
+        </section>
+    </main>
+
+    <script>
+    async function loadStudents() {
+        try {
+            const res = await fetch("http://localhost:5000/api/students");
+            const result = await res.json();
+            const table = document.getElementById("studentsTable");
+            table.innerHTML = `
+                <tr>
+                    <th>ID</th><th>Name</th><th>Phone</th><th>Department</th><th>Actions</th>
+                </tr>`;
+
+            result.data.forEach(student => {
+                const row = document.createElement("tr");
+                row.id = `student-${student._id}`;
+                row.innerHTML = `
+                    <td data-field="student_id">${student.student_id}</td>
+                    <td data-field="name">${student.name}</td>
+                    <td data-field="phone">${student.phone}</td>
+                    <td data-field="department">${student.department}</td>
+                    <td class="actions">
+                        <button onclick="editStudent(this, '${student._id}')">Edit</button>
+                        <button onclick="deleteStudent('${student._id}')">Delete</button>
+                    </td>`;
+                table.appendChild(row);
+            });
+        } catch (err) {
+            console.error("Failed to load students:", err);
+        }
+    }
+
+    function editStudent(button, id) {
+        const row = document.getElementById(`student-${id}`);
+        row.dataset.originalHtml = row.innerHTML;
+        const cellsToEdit = row.querySelectorAll("td[data-field]");
+        cellsToEdit.forEach(cell => {
+            const field = cell.dataset.field;
+            if (field === 'student_id') return;
+            const currentValue = cell.textContent;
+            cell.innerHTML = `<input type="text" value="${currentValue}" data-field="${field}">`;
+        });
+        const actionsCell = row.querySelector(".actions");
+        actionsCell.innerHTML = `
+            <button onclick="saveStudent(this, '${id}')">Save</button>
+            <button onclick="cancelEdit('student', '${id}')">Cancel</button>`;
+    }
+
+    async function saveStudent(button, id) {
+        const row = document.getElementById(`student-${id}`);
+        const inputs = row.querySelectorAll("input[data-field]");
+        const updatedData = {};
+        inputs.forEach(input => {
+            updatedData[input.dataset.field] = input.value;
+        });
+        try {
+            const res = await fetch(`http://localhost:5000/api/students/${id}`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(updatedData)
+            });
+            if (!res.ok) throw new Error('Update failed');
+            alert("Student updated successfully!");
+            location.reload();
+        } catch (err) {
+            console.error("Failed to save student:", err);
+            alert("Update failed.");
+        }
+    }
+
+    async function deleteStudent(id) {
+        if (!confirm("Delete this student?")) return;
+        try {
+            const res = await fetch(`http://localhost:5000/api/students/${id}`, { method: "DELETE" });
+            if (res.status !== 204) throw new Error('Delete failed');
+            alert("Student deleted");
+            location.reload();
+        } catch (err) {
+            alert("Delete failed.");
+        }
+    }
+
+    async function loadCourses() {
+        try {
+            const res = await fetch("http://localhost:5000/api/course");
+            const result = await res.json();
+            const table = document.getElementById("coursesTable");
+            table.innerHTML = `
+                <tr>
+                    <th>ID</th><th>Name</th><th>Credits</th><th>Actions</th>
+                </tr>`;
+            result.data.forEach(course => {
+                const row = document.createElement("tr");
+                row.id = `course-${course._id}`;
+                row.innerHTML = `
+                    <td data-field="course_id">${course.course_id}</td>
+                    <td data-field="name">${course.cname}</td>
+                    <td data-field="credits">${course.credits}</td>
+                    <td class="actions">
+                        <button onclick="editCourse(this, '${course._id}')">Edit</button>
+                        <button onclick="deleteCourse('${course._id}')">Delete</button>
+                    </td>`;
+                table.appendChild(row);
+            });
+        } catch (err) {
+            console.error("Failed to load courses:", err);
+        }
+    }
+
+    function editCourse(button, id) {
+        const row = document.getElementById(`course-${id}`);
+        row.dataset.originalHtml = row.innerHTML;
+        const cellsToEdit = row.querySelectorAll("td[data-field]");
+        cellsToEdit.forEach(cell => {
+            const field = cell.dataset.field;
+            if (field === 'course_id') return;
+            const currentValue = cell.textContent;
+            cell.innerHTML = `<input type="text" value="${currentValue}" data-field="${field}">`;
+        });
+        const actionsCell = row.querySelector(".actions");
+        actionsCell.innerHTML = `
+            <button onclick="saveCourse(this, '${id}')">Save</button>
+            <button onclick="cancelEdit('course', '${id}')">Cancel</button>`;
+    }
+
+    async function saveCourse(button, id) {
+        const row = document.getElementById(`course-${id}`);
+        const inputs = row.querySelectorAll("input[data-field]");
+        const updatedData = {};
+        inputs.forEach(input => {
+            updatedData[input.dataset.field] = input.value;
+        });
+        try {
+            const res = await fetch(`http://localhost:5000/api/course/${id}`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(updatedData)
+            });
+            if (!res.ok) throw new Error('Update failed');
+            alert("Course updated successfully!");
+            location.reload();
+        } catch (err) {
+            console.error("Failed to save course:", err);
+            alert("Update failed.");
+        }
+    }
+
+    async function deleteCourse(id) {
+        if (!confirm("Delete this course?")) return;
+        try {
+            const res = await fetch(`http://localhost:5000/api/course/${id}`, { method: "DELETE" });
+            if (res.status !== 204) throw new Error('Delete failed');
+            alert("Course deleted");
+            location.reload();
+        } catch (err) {
+            alert("Delete failed.");
+        }
+    }
+
+    async function loadFaculty() {
+        try {
+            const res = await fetch("http://localhost:5000/api/faculty");
+            const result = await res.json();
+            const table = document.getElementById("facultyTable");
+            table.innerHTML = `
+                <tr>
+                    <th>ID</th><th>Name</th><th>Department</th><th>Actions</th>
+                </tr>`;
+            result.data.forEach(faculty => {
+                const row = document.createElement("tr");
+                row.id = `faculty-${faculty._id}`;
+                row.innerHTML = `
+                    <td data-field="faculty_id">${faculty.faculty_id}</td>
+                    <td data-field="name">${faculty.fname}</td>
+                    <td data-field="department">${faculty.dept}</td>
+                    <td class="actions">
+                        <button onclick="editFaculty(this, '${faculty._id}')">Edit</button>
+                        <button onclick="deleteFaculty('${faculty._id}')">Delete</button>
+                    </td>`;
+                table.appendChild(row);
+            });
+        } catch (err) {
+            console.error("Failed to load faculty:", err);
+        }
+    }
+
+    function editFaculty(button, id) {
+        const row = document.getElementById(`faculty-${id}`);
+        row.dataset.originalHtml = row.innerHTML;
+        const cellsToEdit = row.querySelectorAll("td[data-field]");
+        cellsToEdit.forEach(cell => {
+            const field = cell.dataset.field;
+            if (field === 'faculty_id') return;
+            const currentValue = cell.textContent;
+            cell.innerHTML = `<input type="text" value="${currentValue}" data-field="${field}">`;
+        });
+        const actionsCell = row.querySelector(".actions");
+        actionsCell.innerHTML = `
+            <button onclick="saveFaculty(this, '${id}')">Save</button>
+            <button onclick="cancelEdit('faculty', '${id}')">Cancel</button>`;
+    }
+
+    async function saveFaculty(button, id) {
+        const row = document.getElementById(`faculty-${id}`);
+        const inputs = row.querySelectorAll("input[data-field]");
+        const updatedData = {};
+        inputs.forEach(input => {
+            updatedData[input.dataset.field] = input.value;
+        });
+        try {
+            const res = await fetch(`http://localhost:5000/api/faculty/${id}`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(updatedData)
+            });
+            if (!res.ok) throw new Error('Update failed');
+            alert("Faculty updated successfully!");
+            location.reload();
+        } catch (err) {
+            console.error("Failed to save faculty:", err);
+            alert("Update failed.");
+        }
+    }
+
+    async function deleteFaculty(id) {
+        if (!confirm("Delete this faculty member?")) return;
+        try {
+            const res = await fetch(`http://localhost:5000/api/faculty/${id}`, { method: "DELETE" });
+            if (res.status !== 204) throw new Error('Delete failed');
+            alert("Faculty member deleted");
+            location.reload();
+        } catch (err) {
+            alert("Delete failed.");
+        }
+    }
+    loadStudents();
+    loadCourses();
+    loadFaculty();
+    </script>
 </body>
 </html>

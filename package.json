@@ -1,0 +1,19 @@
+{
+  "name": "department-management-system",
+  "version": "1.0.0",
+  "description": "Platform for storing department information",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/D1927/Department-Management-System.git"
+  },
+  "author": "Deepika",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/D1927/Department-Management-System/issues"
+  },
+  "homepage": "https://github.com/D1927/Department-Management-System#readme"
+}

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Manage Students</title>
-  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="style.css">
 
 </head>
 <body>
@@ -30,15 +30,12 @@
 
         <label for="name">Name:</label>
         <input type="text" name="name" id="name"required placeholder="e.g.,XYZ">
-
-        <label for="rollno" >Roll No:</label>
-        <input type="text" name="rollno" id="rollno" required placeholder="e.g., 101">
         
         <label for="email">Email ID:</label>
         <input type="email" name="email" id="email" required placeholder="e.g.,xyz@gmail.com">
 
         <label for="phno">Phone Number</label>
-        <input type="tel" id="phno" maxlength="10" minlength="10" name="phno" required placeholder="e.g.,9876543210">
+        <input type="tel" id="phone" maxlength="10" minlength="10" name="phone" required placeholder="e.g.,9876543210">
 
         <label for="department">Department:</label>
         <input type="text" name="department" id="department" required placeholder="e.g.,Information Technology">
@@ -47,24 +44,30 @@
       </form>
     </section>
 
-    <section class="table-section">
-      <h2>Student Records</h2>
-      <table>
-        <tr>
-          <th>ID</th><th>Name</th><th>Roll No</th><th>Department</th><th>Actions</th>
-        </tr>
-        <!-- Sample row -->
-        <tr>
-          <td>1</td><td>Aliya</td><td>101</td><td>IT</td>
-          <td>
-            <button class="edit">Edit</button>
-            <button class="delete">Delete</button>
-          </td>
-        </tr>
-      </table>
-    </section>
   </main>
-    <script src="../js/student.js"></script>
+  <script>
+        document.querySelector("form").addEventListener("submit", async (e) => {
+        e.preventDefault();
 
+        const data = {
+            student_id: document.getElementById("student_id").value,
+            name: document.getElementById("name").value,
+            email: document.getElementById("email").value,
+            phone: document.getElementById("phone").value,
+            department: document.getElementById("department").value
+        };
+
+        const res = await fetch("http://localhost:5000/api/students", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+        console.log(result);
+        alert("Student saved!");
+
+        });
+  </script>
 </body>
 </html>
