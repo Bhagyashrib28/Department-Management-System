@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Manage Courses</title>
-<link rel="stylesheet" href="./style.css">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
@@ -37,24 +37,29 @@
       </form>
     </section>
 
-    <section class="table-section">
-      <h2>Course Records</h2>
-      <table>
-        <tr>
-          <th>ID</th><th>Course Name</th><th>Credits</th><th>Actions</th>
-        </tr>
-        <tr>
-          <td>C101</td><td>Database Systems</td><td>4</td>
-          <td>
-            <button class="edit">Edit</button>
-            <button class="delete">Delete</button>
-          </td>
-        </tr>
-      </table>
-    </section>
+      <script>
+        document.querySelector("form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const data = {
+            course_id: document.getElementById("course_id").value,
+            cname: document.getElementById("cname").value,
+            credits: document.getElementById("credits").value,
+        };
+
+        const res = await fetch("http://localhost:5000/api/course", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+        console.log(result);
+        alert("Course saved!");
+
+        });
+  </script>
+
   </main>
-  <script src="../js/course.js"></script>
 </body>
-
-
 </html>

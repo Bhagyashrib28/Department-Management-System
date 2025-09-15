@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Manage Faculty</title>
-<link rel="stylesheet" href="./style.css">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
@@ -38,23 +38,28 @@
       </form>
     </section>
 
-    <section class="table-section">
-      <h2>Faculty Records</h2>
-      <table>
-        <tr>
-          <th>ID</th><th>Name</th><th>Department</th><th>Actions</th>
-        </tr>
-        <tr>
-          <td>F01</td><td>Dr. Bhagyashree</td><td>Computer</td>
-          <td>
-            <button class="edit">Edit</button>
-            <button class="delete">Delete</button>
-          </td>
-        </tr>
-      </table>
-    </section>
-  </main>
-    <script src="../js/faculty.js"></script>
+          <script>
+        document.querySelector("form").addEventListener("submit", async (e) => {
+        e.preventDefault();
 
+        const data = {
+            faculty_id: document.getElementById("faculty_id").value,
+            fname: document.getElementById("fname").value,
+            dept: document.getElementById("dept").value,
+        };
+
+        const res = await fetch("http://localhost:5000/api/faculty", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+        console.log(result);
+        alert("Faculty saved!");
+
+        });
+  </script>
+  </main>
 </body>
 </html>
