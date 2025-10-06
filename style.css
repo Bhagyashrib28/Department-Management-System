@@ -162,7 +162,7 @@ body.login-page {
   align-items: center;
 }
 
-
+/* Container to center the login card */
 .login-container {
   width: 100%;
   display: flex;
@@ -170,7 +170,7 @@ body.login-page {
   align-items: center;
 }
 
-
+/* Login card box */
 .login-card {
   background-color: #ffffff;
   padding: 40px;
@@ -181,7 +181,7 @@ body.login-page {
   text-align: center;
 }
 
-
+/* Title in login card */
 .card-title {
   font-size: 1.7rem;
   color: #333333;
@@ -189,14 +189,14 @@ body.login-page {
   font-weight: 600;
 }
 
-
+/* Login form layout */
 .login-form {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-
+/* Input label */
 .form-group label {
   display: block;
   text-align: left;
@@ -205,7 +205,7 @@ body.login-page {
   color: #555;
 }
 
-
+/* Input fields */
 .form-group input[type="text"],
 .form-group input[type="password"] {
   width: 100%;
@@ -216,14 +216,14 @@ body.login-page {
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-
+/* Focus effect on input */
 .form-group input:focus {
   border-color: #4b88f5;
   outline: none;
   box-shadow: 0 0 0 2px rgba(75, 136, 245, 0.2);
 }
 
-
+/* Login button */
 .login-button {
   background-color: #4b88f5;
   color: white;
@@ -236,22 +236,17 @@ body.login-page {
   transition: background-color 0.3s ease;
 }
 
-
+/* Hover effect for button */
 .login-button:hover {
   background-color: #3b76d1;
 }
 
-
+/* Note under login form */
 .access-note {
   margin-top: 25px;
   font-size: 0.9rem;
   color: #777;
 }
-
-
-
-
-
 
 
 
