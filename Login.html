@@ -1,50 +1,50 @@
+<!-- login.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Department Management System Login</title>
-    <link rel="stylesheet" href="style.css">
-    </head>
-<body>
-    <div class="login-container">
-        <div class="login-card">
-            <h1 class="card-title">Department Management System</h1>
-            <form class="login-form">
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                </div>
-                <button type="submit" class="login-button">Login</button>
-            </form>
-            <p class="access-note">For Admin & Staff Access Only</p>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Department Management System Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-page">
+
+  <div class="login-container">
+    <div class="login-card">
+      <h1 class="card-title">Department Management System</h1>
+      <form class="login-form" id="loginForm">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" placeholder="Enter your username" required>
         </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        </div>
+        <button type="submit" class="login-button">Login</button>
+      </form>
+      <p class="access-note">For Admin & Staff Access Only</p>
     </div>
-<script>
-    // Select the form element
-    const loginForm = document.querySelector('.login-form');
+  </div>
 
-    loginForm.addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent default form submission
+  <script>
+    // Handle Login Submit
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // stop form from refreshing the page
 
-        // Get input values
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+      // (Optional) Basic login check
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
 
-        // Simple validation (you can replace this with actual authentication)
-        if(username === "admin" && password === "admin123") {
-            alert("Login Successfully!");
-            // Redirect to home page (replace 'home.html' with your actual home page file)
-            window.location.href = "home.html";
-        } else {
-            alert("Invalid username or password!");
-        }
+      // You can replace this check with real backend validation
+      if(username.trim() !== "" && password.trim() !== "") {
+          alert("Login Successfully!");
+          window.location.href = "index.html"; // redirect to home page
+      } else {
+          alert("Please enter valid username and password.");
+      }
     });
-</script>
-
+  </script>
 </body>
 </html>
+
